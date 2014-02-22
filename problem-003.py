@@ -8,18 +8,20 @@
 
 def primes():
   """Prime generator"""
-  yield 2
-  compositeToPrime = { 4 : 2 }
-  i = 3
+  compositeToPrime = {}
+  i = 2
   while True:
     if not i in compositeToPrime:
       yield i
       compositeToPrime[i*i] = i
     else:
       prime = compositeToPrime[i]
-      compositeToPrime[i + prime] = prime
+      nextComposite = i + prime
+      while nextComposite in compositeToPrime:
+        nextComposite += prime
+      compositeToPrime[nextComposite] = prime
       del compositeToPrime[i]
-    i += 2
+    i += 1
       
 def primeFactors(n):
   """Use recursive trial division of primes to find factors"""
