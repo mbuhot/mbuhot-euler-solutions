@@ -8,9 +8,8 @@
 
 def primes():
   """Prime generator"""
-  compositeToPrime = {}
-  yield 2;
-  compositeToPrime[4] = 2
+  yield 2
+  compositeToPrime = { 4 : 2 }
   i = 3
   while True:
     if not i in compositeToPrime:
@@ -18,7 +17,7 @@ def primes():
       compositeToPrime[i*i] = i
     else:
       prime = compositeToPrime[i]
-      compositeToPrime[i + prime] = i
+      compositeToPrime[i + prime] = prime
       del compositeToPrime[i]
     i += 2
       

@@ -5,11 +5,12 @@
 # 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
 # What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
 
+import operator
+
 def primes():
   """Prime generator"""
-  compositeToPrime = {}
-  yield 2;
-  compositeToPrime[4] = 2
+  yield 2
+  compositeToPrime = { 4 : 2 }
   i = 3
   while True:
     if not i in compositeToPrime:
@@ -17,32 +18,32 @@ def primes():
       compositeToPrime[i*i] = i
     else:
       prime = compositeToPrime[i]
-      compositeToPrime[i + prime] = i
+      compositeToPrime[i + prime] = prime
       del compositeToPrime[i]
     i += 2
       
-def primeFactors(n, result=None):
-  """Use recursive trial division of primes to find factors"""
-  if result is None: result = {}
-  if (n == 1): return result
+def primeFactors(n):
+  """Use trial division of primes to find factors"""
+  result = {}
   for prime in primes():
-    if (n % prime == 0):
-      result.setdefault(prime, 0)
-      result[prime] += 1 
-      return primeFactors(n / prime, result)
+    if (n == 1): return result
+    while (n % prime == 0):
+      result[prime] = result.setdefault(prime, 0) + 1 
+      n = n // prime
+
+def productOfFactors(factorDict):
+  product = 1
+  for (factor, exponent) in factorDict.items():
+    product = product * pow(factor, exponent)
+  return product
 
 def smallestMultiple(divisors):
   factorizations = [primeFactors(n) for n in divisors]
   combinedFactors = {}
   for factorDict in factorizations:
     for (factor, exponent) in factorDict.items():
-      combinedFactors.setdefault(factor, 0)
-      combinedFactors[factor] = max(exponent, combinedFactors[factor])
-  
-  result = 1
-  for (prime, exponent) in combinedFactors.items():
-    result = result * pow(prime, exponent)
-
+      combinedFactors[factor] = max(exponent, combinedFactors.setdefault(factor, 0))
+  result = productOfFactors(combinedFactors)
   print("least common multiple of", divisors, "=", result)
   return result
 
