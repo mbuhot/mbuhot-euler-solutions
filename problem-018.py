@@ -33,16 +33,12 @@ input = """
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23"""
 
 numbers = [[int(s) for s in line.split(' ')] for line in input.split('\n') if line != '']
-maxPaths = [[numbers[0][0]]]
+N = len(numbers)
 
-def maxPathTo(i, j):
-  above = maxPaths[i-1]
-  if j == 0: return above[j]
-  elif j == i: return above[j-1]
-  else: return max(above[j-1], above[j])
+_memo = {}
+def maxPath(i,j):
+  if not (i,j) in _memo:
+    _memo[(i,j)] = numbers[i][j] + (max(maxPath(i+1, j), maxPath(i+1, j+1)) if i < N-1 else 0)
+  return _memo[(i,j)]
 
-for i in range(1, len(numbers)):
-  nextRow = [maxPathTo(i,j) + numbers[i][j] for j in range(0, i+1)]
-  maxPaths.append(nextRow)
-
-print('longest path is:', max(maxPaths[-1]))
+print('longest path is:', maxPath(0,0))
