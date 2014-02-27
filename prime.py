@@ -1,3 +1,5 @@
+from itertools import takewhile
+
 knownPrimes = [2]
 compositeToPrime = {4 : 2}
 
@@ -21,3 +23,5 @@ def primes():
       del compositeToPrime[i]
     i += 1
 
+def isPrime(n):
+  return n in takewhile(lambda p: p <= n, primes())
