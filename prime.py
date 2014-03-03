@@ -37,3 +37,7 @@ def isPrime(n):
     for p in primes():
       if n % p == 0: return False
       if p > sqrtN: return True
+
+def isComposite(n):
+  return not isPrime(n)
+
