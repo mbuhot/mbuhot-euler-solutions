@@ -20,13 +20,13 @@ Surprisingly, there are palindromic numbers that are themselves Lychrel numbers;
 How many Lychrel numbers are there below ten-thousand?
 '''
 
-def lychrel(x, it=0):
-  if it == 50:
-    return True
-  reversedigits = int(str(x)[::-1])
-  y = x + reversedigits
-  isPalendrome = str(y) == str(y)[::-1]
-  return (not isPalendrome) and lychrel(y, it+1)
+def lychrel(x):
+  for i in range(0, 50):
+    reversedigits = int(str(x)[::-1])
+    x = x + reversedigits
+    isPalendrome = str(x) == str(x)[::-1]
+    if isPalendrome: return False
+  return True
   
 assert(not lychrel(47))
 assert(not lychrel(349))
