@@ -1,43 +1,52 @@
-import bisect
+import bitset
+import array
+from itertools import count
 import math
+from os import stat
 
-knownPrimes = [2]
-compositeToPrime = {4 : 2}
+N = 8
+knownPrimes = bitset.makebitset(8, init=0)
+for p in [2,3,7]:
+  bitset.setbit(knownPrimes, p)
 
+def sieveMorePrimes(M):
+  print('sieving primes up to',M)
+  newbitset = bitset.makebitset(M, init=1)
+  bitset.clearbit(newbitset, 0)
+  bitset.clearbit(newbitset, 1)
+  for i in range(2, math.ceil(math.sqrt(M)) + 1):
+    if bitset.getbit(newbitset, i) == 1:
+      for j in range(i*i, M, i):
+        bitset.clearbit(newbitset, j)
+
+  global N, knownPrimes
+  N,knownPrimes = M, newbitset
+
+def isPrime(x):
+  if x >= N:
+    sieveMorePrimes(2*x)
+  return bitset.getbit(knownPrimes, x) == 1
+  
 def primes(max=None):
-  """Prime generator"""
-  for p in knownPrimes:
-    if max is not None and p > max:
-      return
-    yield p
-
-  i = knownPrimes[-1] + 1
-  while True:
-    if not i in compositeToPrime:
-      knownPrimes.append(i)
-      compositeToPrime[i*i] = i
-      if max is not None and i > max:
-        return
-      yield i
-    else:
-      prime = compositeToPrime[i]
-      nextComposite = i + prime
-      while nextComposite in compositeToPrime:
-        nextComposite += prime
-      compositeToPrime[nextComposite] = prime
-      del compositeToPrime[i]
-    i += 1
-
-def isPrime(n):
-  i = bisect.bisect_left(knownPrimes, n)
-  if i < len(knownPrimes):
-    return knownPrimes[i] == n
-  else:
-    sqrtN = math.sqrt(n)
-    for p in primes():
-      if n % p == 0: return False
-      if p > sqrtN: return True
+  if max is not None and N < max:
+    sieveMorePrimes(max)
+  yield 2
+  for i in count(3, step=2):
+    if max is not None and i >= max: break
+    if isPrime(i): yield i
 
 def isComposite(n):
   return not isPrime(n)
+
+def savePrimes(filename):
+  with open(filename, 'wb') as f:
+    knownPrimes.tofile(f)
+
+def loadPrimes(filename):
+  global knownPrimes, N
+  with open(filename, 'rb') as f:
+    filesize = stat(filename).st_size
+    knownPrimes = array.array('B')
+    knownPrimes.fromfile(f, filesize)
+    N = filesize * 8
 
