@@ -6,7 +6,7 @@ from os import stat
 
 N = 8
 knownPrimes = bitset.makebitset(8, init=0)
-for p in [2,3,7]:
+for p in [2,3,5,7]:
   bitset.setbit(knownPrimes, p)
 
 def sieveMorePrimes(M):

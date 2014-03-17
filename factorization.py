@@ -4,6 +4,7 @@ import prime
 primeFactorMemoized = { 1 : collections.defaultdict(int) }
 def primeFactors(n):
   """Use trial division of primes to find factors"""
+ 
   if n in primeFactorMemoized:
     return primeFactorMemoized[n].copy()
 
@@ -32,6 +33,6 @@ def divisors(n):
   exponents = list(factorDict.values())
   return sorted(list(divisor_generator(primes, exponents, index=0, result=1)))
 
-assert([1, 2, 4, 5, 10, 20] == divisors(20))
+#assert([1, 2, 4, 5, 10, 20] == divisors(20))
 assert([1] == divisors(1))
 
