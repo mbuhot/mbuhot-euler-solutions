@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
+from pythagoras import pythagoreanTriples
 from collections import defaultdict
-from itertools import count
 
 description = '''
 Singular integer right triangles
@@ -22,29 +22,15 @@ In contrast, some lengths of wire, like 20 cm, cannot be bent to form an integer
 Given that L is the length of the wire, for how many values of L ≤ 1,500,000 can exactly one integer sided right angle triangle be formed?
 '''
 
-# map from triangle perimeter to set of (a,b,c) that can produce it
-triangles = defaultdict(set)
+# map from triangle perimeter to count of (a,b,c) that can produce it
+triangles = defaultdict(int)
 
 MAX_WIRE = 1500000
+for (a,b,c) in pythagoreanTriples(MAX_WIRE):
+  triangles[a+b+c] += 1
 
-# use Euclids formula to generate all pythagorean triples 
-for n in count(1):
+assert(triangles[20] == 0)
+assert(triangles[120] == 3)
 
-  # once 4n^2 exceeds MAX_WIRE, a+b+c will also be >MAX_WIRE
-  if (4 * n**2) > MAX_WIRE: 
-    break
+print(sum(1 for (p,n) in triangles.items() if n == 1))
 
-  for m in count(n+1):
-    a = m**2 - n**2
-    b = 2 * m * n
-    c = m**2 + n**2
-    p = a+b+c
-    if p > MAX_WIRE: break
-    # standardize the tuples so that a is the smaller side
-    a, b = min(a,b), max(a,b)
-    k = 1
-    while p*k <= MAX_WIRE:
-      triangles[p*k].add((a*k,b*k,c*k))
-      k += 1
-
-print(sum(1 for (k,v) in triangles.items() if len(v) == 1))
