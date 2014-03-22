@@ -44,9 +44,7 @@ for n in count(1):
     a, b = min(a,b), max(a,b)
     k = 1
     while p*k <= MAX_WIRE:
-      s = triangles[p*k]
-      s.add((a*k,b*k,c*k))
-      triangles[p*k] = s
+      triangles[p*k].add((a*k,b*k,c*k))
       k += 1
 
 print(sum(1 for (k,v) in triangles.items() if len(v) == 1))
