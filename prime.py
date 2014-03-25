@@ -10,7 +10,6 @@ for p in [2,3,5,7]:
   bitset.setbit(knownPrimes, p)
 
 def sieveMorePrimes(M):
-  print('sieving primes up to',M)
   newbitset = bitset.makebitset(M, init=1)
   bitset.clearbit(newbitset, 0)
   bitset.clearbit(newbitset, 1)
@@ -28,6 +27,7 @@ def isPrime(x):
   return bitset.getbit(knownPrimes, x) == 1
   
 def primes(max=None):
+  if max <= 2: return
   if max is not None and N < max:
     sieveMorePrimes(max)
   yield 2
