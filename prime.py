@@ -27,7 +27,7 @@ def isPrime(x):
   return bitset.getbit(knownPrimes, x) == 1
   
 def primes(max=None):
-  if max <= 2: return
+  if max is not None and max <= 2: return
   if max is not None and N < max:
     sieveMorePrimes(max)
   yield 2

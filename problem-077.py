@@ -1,8 +1,9 @@
 #! /usr/bin/env python3
 
-from memo import memoize
+import math
 import prime
 from itertools import count
+from memo import memoize
 
 description = '''
 Prime summations
@@ -45,7 +46,21 @@ assert(numSums(10) == 5)
 for i in count(2):
   ns = numSums(i)
   if ns > 5000: 
+    answer = i
     print(i, ns)
     break
-  
 
+# A very slick solution from Math Overflow - credit to J.M. http://math.stackexchange.com/questions/89240/prime-partition
+# Gives the total number of prime partitions, so need to subtract 1 in the case of n being prime
+# Memoization still required due to the recursive calls in the summation
+def sumOfPrimeFactors(n):
+  return sum(p for p in prime.primes(n + 1) if n%p == 0)
+
+@memoize
+def primePartitions(n):
+  return (sumOfPrimeFactors(n) + sum(sumOfPrimeFactors(j)*primePartitions(n-j) for j in range(1, n))) // n  
+
+def primeSums(n):
+  return primePartitions(n) - (1 if prime.isPrime(n) else 0)
+
+assert(numSums(answer) == primeSums(answer))
