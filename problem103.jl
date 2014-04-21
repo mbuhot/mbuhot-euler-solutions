@@ -1,5 +1,7 @@
 module problem103
 
+export SpecialSet, can_add, add
+
 # Special set is a set of values, maintaining the two properties:
 # 1) Every disjoint subset has a unique sum
 # 2) every subset size N has greater sum than all subsets size < N
@@ -20,6 +22,7 @@ function can_add(x :: Int, s :: SpecialSet)
 
   # must be a new minimum value
   if x >= s.values[1]
+    #println("can't add $x to $(s.values'), not a minimum")
     return false
   end
 
@@ -27,14 +30,16 @@ function can_add(x :: Int, s :: SpecialSet)
   # implies that the sum of any subset containing x would be unique 
   for y in s.sums
     if in(x+y, s.sums)
+      #println("can't add $x to $(s.values'), sum $(x+y) already exists")
       return false
     end
   end
 
-  # new min + old min must be greater than max
-  # implies that any subset containing the min will sum to greater than any subset with fewer items 
-  if x + s.values[1] <= s.values[end]
-    return false
+  # larger sized subsets must sum to greater than smaller subsets 
+  for k = 1:ceil(length(s.values)/2)
+    if x+sum(s.values[1:k]) <= sum(s.values[end-k+1:end])
+      return false
+    end
   end
 
   return true
@@ -79,6 +84,6 @@ using Base.Test
 @test optimum_special_set(11, 25, 6) == [11, 18, 19, 20, 22, 25]
 
 # based on the hints in the question, the bounds of the solution should be 20 and 45
-println(optimum_special_set(20, 45, 7)')
+#println(optimum_special_set(20, 45, 7)')
 	
 end
