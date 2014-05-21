@@ -18,21 +18,26 @@ function palendromic(n)
   return digits == digits[end:-1:1]
 end
 
-function solve(n=10^8)
-  squares = [(i, i^2) for i=1:int(sqrt(n))]
-  k = 1
-  special = Int[]
-  while length(squares) > 0
-    squares = [(i, s + (i+k)^2) for (i, s) in squares]
-    squares = filter(x -> x[2] < n, squares)
-    for x in squares
-      if palendromic(x[2])
-        special = union(special, x[2])
-      end
-    end
+function squaresFrom(i, maxSq)
+  k = 2
+  n = i^2 + (i+1)^2
+  result = Int[]
+  while n < maxSq
+    push!(result, n)
+    n += (i+k)^2
     k += 1
   end
-  return sum(special)
+  return result
+end
+
+function palendromicSquares(n)
+  for i = 1:sqrt(n), sq in filter(palendromic, squaresFrom(i, n))
+    produce(sq)
+  end
+end
+
+function solve(n=10^8)
+  return sum(unique(@task palendromicSquares(n)))
 end
 
 using Base.Test
