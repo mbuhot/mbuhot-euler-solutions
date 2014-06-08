@@ -17,14 +17,19 @@ function R(k :: Int)
 end
 
 # find the least value of k such that R(k) is a multiple of n
+# Insight from the Project Euler forums:
+# A(n) is the minimum k, such that n divides R(k) 
+# => (10^k - 1)/9 == 0 mod n
+# => 10^k - 1     == 0 mod 9n
+# => 10^k         == 1 mod 9n
+# Iteratively generate powers of 10 mod 9n, and terminate when the result is 1.
 function A(n)
-  r = BigInt(1)
-  assert(gcd(n, 10) == 1)
+  tenK = 10
   for k = 1:Inf
-    if r % n == 0
+    if tenK == 1
       return k
     end
-    r = 10*r + 1 # calculate the next repunit
+    tenK = (tenK * 10) % (9*n)
   end
 end
 
