@@ -6,7 +6,7 @@
 import Swiftest
 
 func largestPrimeFactor(n:Int) -> Int {
-  let factors = primeFactors(n)
+  let factors = primeFactors(n).keys
   return factors.maxElement()!
 }
 
