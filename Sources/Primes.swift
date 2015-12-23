@@ -1,20 +1,20 @@
 struct PrimeGenerator : GeneratorType {
     typealias Element = Int
-    private var compositeToPrime = [(4,2), (9,3)]
-    private var i = 1
+    private var compositeToPrime = [(9,3), (25, 5), (49, 7)]
+    private var i = 2
     
     mutating func next() -> Element? {
-        i += 1
-        if i < 4 { return i }
+        if (i < 9) { let p = i; i += (i%2) + 1; return p } 
         while true {
+            let p = i
+            i += 2
             let (composite, prime) = compositeToPrime[0]
-            if i == composite {
-                i += 1
-                compositeToPrime[0] = (composite+prime, prime)
+            if p == composite {
+                compositeToPrime[0] = (composite + 2*prime, prime)
                 sort()
             } else {
-                compositeToPrime.append((i*i, i))
-                return i
+                compositeToPrime.append((p*p, p))
+                return p
             }
         }
     }
@@ -27,7 +27,7 @@ struct PrimeGenerator : GeneratorType {
                 break;
             }
             if (composite == next.0) {
-                composite += prime
+                composite += 2*prime
             }
             compositeToPrime[j] = next
             compositeToPrime[j+1] = (composite, prime)
