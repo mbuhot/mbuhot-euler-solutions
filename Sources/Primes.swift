@@ -4,7 +4,12 @@ struct PrimeGenerator : GeneratorType {
     private var i = 2
     
     mutating func next() -> Element? {
-        if (i < 9) { let p = i; i += (i%2) + 1; return p } 
+        // Handle small primes specially
+        if (i < 9) {
+            let p = i;
+            i += (i%2) + 1;
+            return p
+        }
         while true {
             let p = i
             i += 2

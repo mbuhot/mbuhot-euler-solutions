@@ -7,7 +7,8 @@ Swiftest.register([
   Problem004Spec.self,
   Problem005Spec.self,
   Problem006Spec.self,
-  Problem007Spec.self
+  Problem007Spec.self,
+  Problem008Spec.self
 ])
 
 try Swiftest.run()

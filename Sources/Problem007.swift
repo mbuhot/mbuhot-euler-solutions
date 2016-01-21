@@ -8,10 +8,10 @@ import Swiftest
 class Problem007Spec : Swiftest.Spec {
   let spec = describe("Problem 007 - 10,001st prime") {
     it("should give 6th prime = 13") {
-      expect(primes().dropFirst(5).generate().next()!).to.equal(13)
+      expect(primes().dropFirst(5).first).to.equal(13)
     }
     it("should give 10,001st prime = 104743") {
-      expect(primes().dropFirst(10000).generate().next()!).to.equal(104743)
+      expect(primes().dropFirst(10000).first).to.equal(104743)
     }
   }
 }  
