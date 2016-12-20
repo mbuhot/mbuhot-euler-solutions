@@ -6,14 +6,14 @@ use "../task"
 use "promises"
 
 primitive Problem001
-  fun run(env: Env): Promise[String] =>
+  fun run(): Promise[String] =>
     let p1 = Task.async[I64]({(): I64 => Problem001.sumOfMultiples(3, 1000)})
     let p2 = Task.async[I64]({(): I64 => Problem001.sumOfMultiples(5, 1000)})
     let p3 = Task.async[I64]({(): I64 => Problem001.sumOfMultiples(15, 1000)})
 
-    Task.zip3[I64, I64, I64, String](p1, p2, p3, {(x: I64, y: I64, z: I64)(env):String =>
+    Task.zip3[I64, I64, I64, String](p1, p2, p3, {(x: I64, y: I64, z: I64):String =>
         "Problem 001: " + ((x + y) - z).string()
-      } val)
+      })
 
   fun sumOfMultiples(x: I64, max: I64): I64 =>
     var y = x

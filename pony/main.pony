@@ -1,5 +1,6 @@
 use problem001 = "problem001"
 use problem002 = "problem002"
+use problem003 = "problem003"
 
 use "promises"
 
@@ -10,8 +11,9 @@ actor Main
   new create(env': Env) =>
     env = env'
     tasks = [
-      problem001.Problem001.run(env),
-      problem002.Problem002.run(env)
+      problem001.Problem001.run(),
+      problem002.Problem002.run(),
+      problem003.Problem003.run()
     ]
     await(0)
 

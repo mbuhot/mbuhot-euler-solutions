@@ -9,7 +9,7 @@ use "../task"
 use "promises"
 
 primitive Problem002
-  fun run(env: Env): Promise[String] =>
+  fun run(): Promise[String] =>
     Task.async[String]({():String =>
       var a: I64 = 1
       var b: I64 = 2
