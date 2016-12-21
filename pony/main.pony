@@ -1,6 +1,7 @@
 use problem001 = "problem001"
 use problem002 = "problem002"
 use problem003 = "problem003"
+use problem004 = "problem004"
 
 use "promises"
 
@@ -13,7 +14,8 @@ actor Main
     tasks = [
       problem001.Problem001.run(),
       problem002.Problem002.run(),
-      problem003.Problem003.run()
+      problem003.Problem003.run(),
+      problem004.Problem004.run()
     ]
     await(0)
 
